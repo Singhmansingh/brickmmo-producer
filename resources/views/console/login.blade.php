@@ -3,13 +3,13 @@
 @section ('content')
 
     <section class="text-right">
-
+        <p></p>
         <form method="post" action="/console/login" novalidate class="grid grid-cols-2 mx-auto gap-y-2">
 
             @csrf
 
                 <label for="email" class="mr-3">Email Address:</label>
-                <input class="border-2 border-solid border-slate-400 rounded-md" type="email" name="email" id="email" value="{{old('email')}}" required>
+                <input class="border-2 border-solid border-slate-400 rounded-md" type="email" name="email" id="email" value="@if(isset($user)) {{$user->email}} @else {{old('email')}} @endif" required>
 
                 @if ($errors->first('email'))
                     <br>

@@ -47,7 +47,7 @@
                         {{ $segment->type_name }}
                     </td>
                     <td class="px-6 py-4">
-                        @if($segment->status==0)
+                        {{-- @if($segment->status==0)
                             <span class="bg-red-100 text-red-600 p-1 px-2 rounded-lg text-xs">
                                 No Script
                             </span>
@@ -55,13 +55,16 @@
                             <span class="bg-yellow-100 text-yellow-600 p-1 px-2 rounded-lg text-xs">
                                 In Progress
                             </span>
-                        @endif
+                        @endif --}}
                     </td>
                 </tr>
                 @endforeach
+
+                
                    
             </tbody>
         </table>
+        {{$segments->links()}}
     </div>
     
 </section>

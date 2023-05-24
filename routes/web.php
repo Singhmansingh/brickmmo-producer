@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsoleController;
+use App\Http\Controllers\ScriptsController;
 use App\Http\Controllers\SegmentsController;
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +32,6 @@ Route::get('/console/segments/list', [SegmentsController::class, 'list'])->middl
 // Route::get('/console/projects/delete/{project:id}', [ProjectsController::class, 'delete'])->where('project', '[0-9]+')->middleware('auth');
 // Route::get('/console/projects/image/{project:id}', [ProjectsController::class, 'imageForm'])->where('project', '[0-9]+')->middleware('auth');
 // Route::post('/console/projects/image/{project:id}', [ProjectsController::class, 'image'])->where('project', '[0-9]+')->middleware('auth');
+
+Route::get('/console/scripts/list', [ScriptsController::class, 'list'])->middleware('auth');
+Route::get('/console/scripts/new/{segment:id}', [ScriptsController::class, 'new'])->where('segment','[0-9]+')->middleware('auth');

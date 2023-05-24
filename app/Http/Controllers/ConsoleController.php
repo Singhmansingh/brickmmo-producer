@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Script;
 use App\Models\Segment;
 use App\Models\SegmentType;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 
 class ConsoleController extends Controller
@@ -19,7 +21,8 @@ class ConsoleController extends Controller
 
     public function loginForm()
     {
-        return view('console.login');
+        $user = User::all()->first();
+        return view('console.login',["user"=>$user]);
     }
 
     public function login()
@@ -42,16 +45,22 @@ class ConsoleController extends Controller
     public function dashboard()
     {
 
-        $segments = Segment::all()->sortBy('segment_type_id')->map(function($segment) {
-            $segment['type_name']=SegmentType::all()->where('id','=',$segment['segment_type_id'])->first()->type_name;
-            if(Script::all()->where('segment_id','=',$segment->id)->count()) $segment['status']=1;
-            else $segment['status']=0;
-            return $segment;
-        });
+        // $segments = Segment::all()->sortBy('segment_type_id')->map(function($segment) {
+        //     $segment['type_name']=SegmentType::all()->where('id','=',$segment['segment_type_id'])->first()->type_name;
+        //     if(Script::all()->where('segment_id','=',$segment->id)->count()) $segment['status']=1;
+        //     else $segment['status']=0;
+        //     return $segment;
+        // });
 
+        $segments = DB::table("segments")
+        ->leftJoin("segment_types","segments.segment_type_id","=","segment_types.id")
+        ->select(["segments.*","segment_types.type_name"])
+        ->orderBy("created_at","desc")
+        
+        ->paginate(10);
 
         return view('console.dashboard', [
-            'needsApproval' => Script::where('script_approved',0)->count(),
+            'needsApproval' => Script::where('script_status',3)->count(),
             'segmentCount' => Segment::all()->count(),
             'segments' => $segments,
         ]);

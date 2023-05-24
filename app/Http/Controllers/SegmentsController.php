@@ -39,14 +39,12 @@ class SegmentsController extends Controller
         //     return $segment;
         // });
 
-        $reports=DB::table('segments')->where('segment_type_id','=',1)->paginate(5);
-
-        $games=array();
-
-        $jokes=array();
+        $reports=DB::table('segments')->where('segment_type_id','=',1)->orderBy("created_at")->paginate(5,['*'],'Report');
+        $games=DB::table('segments')->where('segment_type_id','=',2)->orderBy("created_at")->paginate(5,['*'],'Game');
+        $jokes=DB::table('segments')->where('segment_type_id','=',3)->orderBy("created_at")->paginate(5,['*'],'Joke');
 
         return view('console.segments.list',[
-            "segments"=>array("Report"=>$reports->items(), "Game"=>$games, "Joke"=>$jokes),
+            "segments"=>array("Report"=>$reports, "Game"=>$games, "Joke"=>$jokes),
         ]);
     }
 }

@@ -24,6 +24,7 @@
         <nav>
             <ul id="dashboard" class="text-sm" role="list">
                 <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/segments/list">Segments</a></li>
+                <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/scripts/list">Scripts</a></li>
                 <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/segment_types/list">Segment Types</a></li>
                 <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/users/list">Users</a></li>
                 <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/logout">Log Out</a></li>
@@ -34,7 +35,8 @@
 
 
     <main class="flex-grow flex flex-col overflow-y-auto h-full p-5">
-        <header class="w3-padding flex-shrink">
+        <header class="w3-padding
+        flex-shrink">
 
         <h1 class="text-3xl font-bold underline">
             Hello world!

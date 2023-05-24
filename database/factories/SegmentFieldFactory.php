@@ -21,8 +21,9 @@ class SegmentFieldFactory extends Factory
     
         return [
             'segment_type_id' => SegmentType::all()->random(),
-            'field_name' => $this->faker->sentence,
-            'field_data_type' => $this->faker->sentence,
+            'field_name' => $this->faker->word(),
+            // 'field_data_type' => $this->faker->sentence,
+            'field_data_type' => "text",
         ];
     }
 }

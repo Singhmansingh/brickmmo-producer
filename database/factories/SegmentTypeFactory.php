@@ -18,7 +18,7 @@ class SegmentTypeFactory extends Factory
     public function definition()
     {
         return [
-            'type_name' => $this->faker->sentence,
+            'type_name' => "report",
         ];
     }
 }
