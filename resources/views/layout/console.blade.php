@@ -7,7 +7,7 @@
     <title>My Reporter</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{url('app.css')}}">
-    <script src="{{url('app.js')}}"></script>
+    <script src="{{url('resources/js/app.js')}}"></script>
 </head>
 </div>
 <body class=" overflow-hidden h-screen w-screen relative">
@@ -35,25 +35,25 @@
 
 
     <main class="flex-grow flex flex-col overflow-y-auto h-full p-5">
-        <header class="w3-padding
-        flex-shrink">
+{{--        <header class="w3-padding--}}
+{{--        flex-shrink">--}}
 
-        <h1 class="text-3xl font-bold underline">
-            Hello world!
-        </h1>
+{{--        <h1 class="text-3xl font-bold underline">--}}
+{{--            Hello world!--}}
+{{--        </h1>--}}
 
-        @if (Auth::check())
-            You are logged in as {{auth()->user()->first}} {{auth()->user()->last}} |
-            <a href="/console/logout">Log Out</a> |
-            <a href="/console/dashboard">Dashboard</a> |
-            <!-- <a href="/">Website Home Page</a> -->
-        @else
-            <a href="/">Return to My Reporter</a>
-        @endif
+{{--        @if (Auth::check())--}}
+{{--            You are logged in as {{auth()->user()->first}} {{auth()->user()->last}} |--}}
+{{--            <a href="/console/logout">Log Out</a> |--}}
+{{--            <a href="/console/dashboard">Dashboard</a> |--}}
+{{--            <!-- <a href="/">Website Home Page</a> -->--}}
+{{--        @else--}}
+{{--            <a href="/">Return to My Reporter</a>--}}
+{{--        @endif--}}
 
-        </header>
+{{--        </header>--}}
 
-        <hr>
+{{--        <hr>--}}
 
 
 

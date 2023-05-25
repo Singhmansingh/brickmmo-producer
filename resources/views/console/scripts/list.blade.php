@@ -17,10 +17,10 @@
                     Script Status
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    
+
                 </th>
-               
-                
+
+
             </tr>
         </thead>
         <tbody>
@@ -56,16 +56,16 @@
                             </span>
                             @break
                         @default
-                            
+
                     @endswitch
                 </td>
                 <td class="px-6 py-4">
-                    <a class="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded-full" href="#">Generate Script</a>
+                    <a class="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded-full" href="/console/scripts/new/{{$script->segment_id}}">Generate Script</a>
                 </td>
-                
+
             </tr>
             @endforeach
-               
+
         </tbody>
     </table>
     {{ $scripts->links() }}

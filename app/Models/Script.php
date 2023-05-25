@@ -11,6 +11,7 @@ class Script extends Model
 
     protected $fillable = [
         'script_audio_src',
+        'script_prompt',
         'chat_script',
         'script_status',
         'approval_date',

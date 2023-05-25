@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 
+
 *,*::before,*::after {
 box-sizing: border-box;
 }
 
 nav > ul a {
     display: block;
+
 }
