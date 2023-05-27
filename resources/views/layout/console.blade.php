@@ -7,7 +7,8 @@
     <title>My Reporter</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{url('app.css')}}">
-    <script src="{{url('resources/js/app.js')}}"></script>
+    <script type="module" src="{{mix('resources/js/app.js')}}"></script>
+    <script src="{{mix('resources/js/functions.js')}}"></script>
 </head>
 </div>
 <body class=" overflow-hidden h-screen w-screen relative">
@@ -34,7 +35,7 @@
 
 
 
-    <main class="flex-grow flex flex-col overflow-y-auto h-full p-5">
+    <main class="flex-grow overflow-y-auto h-full p-5">
 {{--        <header class="w3-padding--}}
 {{--        flex-shrink">--}}
 

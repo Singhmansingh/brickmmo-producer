@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsoleController;
 use App\Http\Controllers\ScriptsController;
 use App\Http\Controllers\SegmentsController;
+use App\Http\Controllers\SegmentTypesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,8 +34,17 @@ Route::get('/console/segments/list', [SegmentsController::class, 'list'])->middl
 // Route::get('/console/projects/image/{project:id}', [ProjectsController::class, 'imageForm'])->where('project', '[0-9]+')->middleware('auth');
 // Route::post('/console/projects/image/{project:id}', [ProjectsController::class, 'image'])->where('project', '[0-9]+')->middleware('auth');
 
+
+Route::get('/console/segmentTypes/list', [SegmentTypesController::class, 'list'])->middleware('auth');
+Route::get('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'editForm'])->where('segmentType','[0-9]+')->middleware('auth');
+Route::post('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'edit'])->where('segmentType','[0-9]+')->middleware('auth');
+
+
 Route::get('/console/scripts/list', [ScriptsController::class, 'list'])->middleware('auth');
 Route::post('/console/scripts/generate', [ScriptsController::class, 'promptToScript']);
 
 Route::get('/console/scripts/new/{segment:id}', [ScriptsController::class, 'new'])->where('segment','[0-9]+')->middleware('auth');
+Route::get('/console/scripts/edit/{script:id}', [ScriptsController::class, 'edit'])->where('script','[0-9]+')->middleware('auth');
+Route::post('/console/scripts/draft/{script:id}', [ScriptsController::class, 'saveDraft']);//->where('script','[0-9]+')->middleware('auth');
 Route::post('/console/scripts/save/{script:id}', [ScriptsController::class, 'save'])->where('script','[0-9]+')->middleware('auth');
+Route::post('/console/scripts/add', [ScriptsController::class, 'add'])->middleware('auth');

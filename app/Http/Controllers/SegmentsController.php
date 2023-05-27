@@ -15,33 +15,24 @@ class SegmentsController extends Controller
 
     public function list(){
 
-            
-        // $reports = Segment::all()->where('segment_type_id','=',1)->map(function($segment) {
-        //     $segment['type_name']="reports";
-        //     if(Script::all()->where('segment_id','=',$segment->id)->count()) $segment['status']=1;
-        //     else $segment['status']=0;
-        //     return $segment;
-        // });
+        $script_segments = DB::table('scripts')->select('segment_id')->get()->pluck('segment_id');
 
-        
-        // $games = Segment::all()->where('segment_type_id','=',2)->map(function($segment) {
-        //     $segment['type_name']="games";
-        //     if(Script::all()->where('segment_id','=',$segment->id)->count()) $segment['status']=1;
-        //     else $segment['status']=0;
-        //     return $segment;
-        // });
 
-        
-        // $jokes = Segment::all()->where('segment_type_id','=',3)->map(function($segment) {
-        //     $segment['type_name']="jokes";
-        //     if(Script::all()->where('segment_id','=',$segment->id)->count()) $segment['status']=1;
-        //     else $segment['status']=0;
-        //     return $segment;
-        // });
-
-        $reports=DB::table('segments')->where('segment_type_id','=',1)->orderBy("created_at")->paginate(5,['*'],'Report');
-        $games=DB::table('segments')->where('segment_type_id','=',2)->orderBy("created_at")->paginate(5,['*'],'Game');
-        $jokes=DB::table('segments')->where('segment_type_id','=',3)->orderBy("created_at")->paginate(5,['*'],'Joke');
+        $reports=DB::table('segments')
+            ->where('segment_type_id','=',1)
+            ->whereNotIn('id', $script_segments)
+            ->orderBy("created_at")
+            ->paginate(5,['*'],'Report');
+        $games=DB::table('segments')
+            ->where('segment_type_id','=',2)
+            ->whereNotIn('id', $script_segments)
+            ->orderBy("created_at")
+            ->paginate(5,['*'],'Game');
+        $jokes=DB::table('segments')
+            ->where('segment_type_id','=',3)
+            ->whereNotIn('id', $script_segments)
+            ->orderBy("created_at")
+            ->paginate(5,['*'],'Joke');
 
         return view('console.segments.list',[
             "segments"=>array("Report"=>$reports, "Game"=>$games, "Joke"=>$jokes),

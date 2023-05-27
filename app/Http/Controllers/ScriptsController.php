@@ -14,19 +14,39 @@ class ScriptsController extends Controller
 {
     public function list(){
 
-        $scripts = DB::table('scripts')->leftJoin('segments','segments.id','=','scripts.segment_id')->where('script_status','!=',1)->orderBy('script_status')->paginate(10);
+        $scripts = DB::table('scripts')
+            ->leftJoin('segments','segments.id','=','scripts.segment_id')
+            ->where('script_status','=',2)
+            ->orderBy('script_status')
+            ->paginate(10);
+
+
+
         return view('console.scripts.list',[
             "scripts"=>$scripts
         ]);
 
     }
 
+    public function edit(Script $script){
+        $segment=DB::table('segments')
+            ->join('segment_types','segments.segment_type_id','=','segment_types.id')
+            ->where('segments.id','=',$script->segment_id)
+            ->get()->first();
+        $segmentFields=SegmentField::all()->where('segment_type_id','=',$segment->id);
+
+        return view('console.scripts.edit',[
+            "script"=>$script,
+            "segmentFields"=>$segmentFields,
+            "segment"=>$segment
+        ]);
+    }
     public function new(Segment $segment){
         $segmentFields = SegmentField::all()->where('segment_type_id','=',$segment->segment_type_id);
 
         $data_decoded=html_entity_decode($segment->segment_data);
         $segmentData=json_decode($data_decoded);
-        $script=Script::all()->where('script')
+
         $segmentType=SegmentType::all()->where('id','=',$segment->segment_type_id)->first();
         return view('console.scripts.new',[
             "segment"=>$segment,
@@ -36,7 +56,7 @@ class ScriptsController extends Controller
         ]);
     }
 
-    public function save(Script $script){
+    public function add(){
 
         $data = request()->validate([
             "script_prompt" => "required",
@@ -44,6 +64,7 @@ class ScriptsController extends Controller
             "segment_id"=>"required"
         ]);
 
+        $script = new Script();
         $script->segment_id=$data['segment_id'];
         $script->script_prompt=$data['script_prompt'];
         $script->chat_script=$data['chat_script'];
@@ -55,6 +76,41 @@ class ScriptsController extends Controller
         $script->save();
 
         return redirect('/console/scripts/list');
+    }
+
+    public function save(Script $script){
+
+        $data = request()->validate([
+            "script_prompt" => "required",
+            "chat_script"=> "required",
+        ]);
+
+        $script->script_prompt=$data['script_prompt'];
+        $script->chat_script=$data['chat_script'];
+        $script->script_status=1;
+        $script->approval_date=today()->toDate();
+        $script->user_id=Auth::user()->id;
+        $script->script_audio_src="";
+
+        $script->save();
+
+        return redirect('/console/scripts/list');
+    }
+
+    public function saveDraft(Script $script){
+        $data = request()->validate([
+            "script_prompt" => "nullable",
+            "chat_script"=> "nullable",
+        ]);
+        $script->script_prompt=$data['script_prompt'];
+
+        if(!$data['chat_script']) $script->chat_script = "";
+        else $script->chat_script=$data['chat_script'];
+        $script->script_status=2;
+
+        $script->save();
+
+        return response('OK',200);
     }
 
     public function promptToScript(Request $request){
@@ -78,8 +134,8 @@ class ScriptsController extends Controller
                     "content" => $prompt
                 )
             ),
-            'temperature' => 0.7,
-            'max_tokens' => 400,
+            'temperature' => 1,
+            'max_tokens' => 500,
         );
 
         $curl = curl_init($url);

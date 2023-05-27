@@ -17,6 +17,7 @@ class SegmentTypeFactory extends Factory
      */
     public function definition()
     {
+        // force the first segment type to be report
         return [
             'type_name' => "report",
         ];

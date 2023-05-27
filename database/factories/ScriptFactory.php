@@ -23,10 +23,11 @@ class ScriptFactory extends Factory
         return [
             'script_audio_src' => $this->faker->sentence,
             'chat_script' => $this->faker->paragraph,
+            'script_prompt'=> $this->faker->sentence,
             'script_status' => $this->faker->numberBetween(0,3),
             'approval_date' => now(),
             'user_id' => User::all()->random(),
             'segment_id' => Segment::all()->random(),
-        ]; 
+        ];
     }
 }

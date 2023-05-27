@@ -3,11 +3,11 @@
 @section('content')
 <h1 class="text-3xl">New Script</h1>
 <p class="my-4">Create the script for the AI to read based on the reporter's prompts.</p>
-<form method="post" action="/console/scripts/add" novalidate>
+<form name="scriptForm" method="post" action="/console/scripts/save/{{$script->id}}" novalidate>
     @csrf
     <input type="hidden" value="{{$segment->id}}" name="segment_id"/>
     <div id="prompt">
-        <h2 class="text-2xl my-2">Repoter Details ({{$segmentType}})</h2>
+        <h2 class="text-2xl my-2">Repoter Details ({{$segment->type_name}})</h2>
 
         <div class="grid gap-6 mb-6 md:grid-cols-2">
             @foreach($segmentFields as $field)
@@ -43,7 +43,7 @@
 
     </div>
     <div class="my-4">
-        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save Draft</button>
+        <button type="button" onclick="saveDraft()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save Draft</button>
         <button type="submit" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Approve</button>
     </div>
 </form>
@@ -74,6 +74,26 @@
         document.getElementById('scriptText').innerHTML=scriptObj['script'];
         document.getElementById('chat_script_content').value = scriptObj['script'];
         document.getElementById('loading').classList.add('hidden');
+    }
+
+    function saveDraft(){
+        var xhr = new XMLHttpRequest();
+        var prompt = document.forms.scriptForm.elements['script_prompt'].value;
+        var script = document.forms.scriptForm.elements['chat_script'].value;
+
+        console.log(prompt,script);
+
+        xhr.open("POST","/console/scripts/draft/{{$script->id}}",true);
+        xhr.setRequestHeader("Content-Type","application/json");
+        xhr.setRequestHeader("X-CSRF-TOKEN",'{{ csrf_token() }}');
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState==4)
+                if(xhr.status==200)
+                    window.location.reload();
+        }
+
+
+        xhr.send(JSON.stringify({script_prompt: prompt, chat_script: script}));
     }
 
 
