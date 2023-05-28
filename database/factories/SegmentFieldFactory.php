@@ -23,8 +23,8 @@ class SegmentFieldFactory extends Factory
         return [
             'segment_type_id' => 1,
             'field_name' => $this->faker->word(),
+            'field_label' => $this->faker->word(),
             'field_data_type' => $this->faker->randomElement(['text','textarea']),
-            'field_data_type' => "text",
         ];
     }
 }

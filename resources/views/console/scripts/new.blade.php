@@ -1,6 +1,7 @@
 @extends('layout.console')
 
 @section('content')
+
 <h1 class="text-3xl">New Script</h1>
 <p class="my-4">Create the script for the AI to read based on the reporter's prompts.</p>
 <form method="post" action="/console/scripts/add" novalidate>
@@ -10,22 +11,17 @@
         <h2 class="text-2xl my-2">Repoter Details ({{$segmentType}})</h2>
 
         <div class="grid gap-6 mb-6 md:grid-cols-2">
-            @foreach($segmentFields as $field)
-                @switch($field->field_data_type)
-                    @case("text")
-                        <div>
-                            <label for="{{$field->field_name}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $field->field_name }}</label>
-                            <p type="text" id="{{$field->field_name}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$field->field_name}}</p>
-                        </div>
-                        @break
+            @foreach($segmentDataFields as $field)
 
-                @endswitch
+                <div>
+                    <label for="{{$field->field_name}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $field->field_name }}</label>
+                    <p type="text" id="{{$field->field_name}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$field->value}}</p>
+                </div>
             @endforeach
         </div>
+
         <hr/>
         <br/>
-
-
     </div>
     <h2 class="text-2xl">Prompter</h2>
     <div>

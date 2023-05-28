@@ -10,32 +10,18 @@ use Illuminate\Http\Request;
 
 class SegmentsController extends Controller
 {
-
-
-
     public function list(){
 
-        $script_segments = DB::table('scripts')->select('segment_id')->get()->pluck('segment_id');
-
-
-        $reports=DB::table('segments')
-            ->where('segment_type_id','=',1)
-            ->whereNotIn('id', $script_segments)
-            ->orderBy("created_at")
-            ->paginate(5,['*'],'Report');
-        $games=DB::table('segments')
-            ->where('segment_type_id','=',2)
-            ->whereNotIn('id', $script_segments)
-            ->orderBy("created_at")
-            ->paginate(5,['*'],'Game');
-        $jokes=DB::table('segments')
-            ->where('segment_type_id','=',3)
-            ->whereNotIn('id', $script_segments)
-            ->orderBy("created_at")
-            ->paginate(5,['*'],'Joke');
+        $segmentTypes=SegmentType::all();
+        $scriptSegmentIds=Script::all()->pluck('segment_id');
+        $segments = DB::table('segments')
+            ->leftJoin('segment_types','segments.segment_type_id','=','segment_types.id')
+            ->whereNotIn('segments.id',$scriptSegmentIds)
+            ->paginate(10);
 
         return view('console.segments.list',[
-            "segments"=>array("Report"=>$reports, "Game"=>$games, "Joke"=>$jokes),
+            "segments"=>$segments,
+            "segmentTypes"=>$segmentTypes
         ]);
     }
 }

@@ -33,26 +33,55 @@ class ScriptsController extends Controller
             ->join('segment_types','segments.segment_type_id','=','segment_types.id')
             ->where('segments.id','=',$script->segment_id)
             ->get()->first();
+
         $segmentFields=SegmentField::all()->where('segment_type_id','=',$segment->id);
+
+        $segmentData=json_decode($segment->segment_data,true);
+
+        $segmentDataFields=array();
+
+        // loop through the segment fields, and combine them with the segment data
+        // when passing to the view, you get the field information as well as the data in a single object
+        foreach ($segmentFields as $field)
+        {
+            $field->value=$segmentData[$field->field_name];
+            $segmentDataFields[]=$field;
+        }
 
         return view('console.scripts.edit',[
             "script"=>$script,
-            "segmentFields"=>$segmentFields,
+            "segmentDataFields"=>$segmentDataFields,
             "segment"=>$segment
         ]);
     }
     public function new(Segment $segment){
-        $segmentFields = SegmentField::all()->where('segment_type_id','=',$segment->segment_type_id);
-
-        $data_decoded=html_entity_decode($segment->segment_data);
-        $segmentData=json_decode($data_decoded);
-
+        $segmentFields=SegmentField::all()->where('segment_type_id','=',$segment->segment_type_id);
+        $segmentData=json_decode($segment->segment_data,true);
+        $segmentDataFields=array();
         $segmentType=SegmentType::all()->where('id','=',$segment->segment_type_id)->first();
+        // loop through the segment fields, and combine them with the segment data
+        // when passing to the view, you get the field information as well as the data in a single object
+        foreach ($segmentFields as $field)
+        {
+            $field->value=$segmentData[$field->field_name];
+            $segmentDataFields[]=$field;
+        }
+
+        $script = new Script();
+        $script->script_status=2;
+        $script->chat_script="";
+        $script->script_prompt="";
+        $script->segment_id=$segment->id;
+        $script->user_id=Auth::user()->id;
+        $script->script_audio_src="";
+        $script->approval_date=now();
+        $script->save();
+
+
         return view('console.scripts.new',[
             "segment"=>$segment,
             "segmentType"=>$segmentType->type_name,
-            "segmentFields"=>$segmentFields,
-            "segmentData"=>$segmentData
+            "segmentDataFields"=>$segmentDataFields,
         ]);
     }
 

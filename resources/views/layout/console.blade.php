@@ -24,9 +24,8 @@
         </div>
         <nav>
             <ul id="dashboard" class="text-sm" role="list">
-                <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/segments/list">Segments</a></li>
                 <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/scripts/list">Scripts</a></li>
-                <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/segment_types/list">Segment Types</a></li>
+                <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/segmentTypes/list">Segment Types</a></li>
                 <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/users/list">Users</a></li>
                 <li><a class="bg-slate-200 p-2 py-3 my-2" href="/console/logout">Log Out</a></li>
             </ul>
