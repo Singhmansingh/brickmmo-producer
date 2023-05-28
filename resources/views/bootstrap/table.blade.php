@@ -11,7 +11,7 @@
         </thead>
         <tbody>
             @forelse($data as $k=>$row)
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                 @foreach($cols as $label=>$col)
                     @if(preg_match('/^\:\S+\:$/',$col))
                         {{-- If the value is a link --}}
