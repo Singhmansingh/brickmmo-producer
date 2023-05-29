@@ -1,7 +1,8 @@
 @extends('layout.console')
-
+@section('header')
+    <h1>Edit Script</h1>
+@endsection
 @section('content')
-<h1 class="text-3xl">New Script</h1>
 <p class="my-4">Create the script for the AI to read based on the reporter's prompts.</p>
 <form name="scriptForm" method="post" action="/console/scripts/save/{{$script->id}}" novalidate>
     @csrf
@@ -30,10 +31,9 @@
         <button type="button" onclick="getScript()" class="my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Generate Script <img id="loading" src="{{asset('assets/spinner.svg')}}" alt="loading script" class="w-9 inline hidden"></button>
     </div>
     <h2 class="text-2xl my-4">AI Script</h2>
+    <p>Surround the name of the announcer with square brackets ([]). Seperate each script line when a new line.</p>
     <div id="script">
-        <input type="hidden" name="chat_script" id="chat_script_content">
-        <pre id="scriptText" class="whitespace-pre-wrap break-words resize-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        </pre>
+        <textarea name="chat_script" id="chat_script_content" id="scriptText" class="whitespace-pre-wrap h-60 break-words resize-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$script->chat_script}}</textarea>
     </div>
     <div id="recording">
 
@@ -67,7 +67,6 @@
     function loadScript(data){
         let scriptObj=JSON.parse(data);
         console.log(scriptObj['script']);
-        document.getElementById('scriptText').innerHTML=scriptObj['script'];
         document.getElementById('chat_script_content').value = scriptObj['script'];
         document.getElementById('loading').classList.add('hidden');
     }

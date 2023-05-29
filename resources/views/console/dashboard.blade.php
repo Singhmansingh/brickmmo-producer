@@ -1,8 +1,12 @@
 @extends ('layout.console')
 
+@section('header')
+    <h1>Welcome to Brickmmo Producer!</h1>
+@endsection
+
 @section ('content')
 
-<section class="container mx-auto">
+<section>
 
     <div class="flex items-center justify-evenly my-10 gap-20">
         <div class="flex-1 block  p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -31,7 +35,7 @@
                     <th scope="col" class="px-6 py-3">
                         Status
                     </th>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -60,13 +64,13 @@
                 </tr>
                 @endforeach
 
-                
-                   
+
+
             </tbody>
         </table>
         {{$segments->links()}}
     </div>
-    
+
 </section>
 
 @endsection

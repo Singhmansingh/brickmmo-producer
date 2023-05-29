@@ -15,15 +15,30 @@ class ScriptsController extends Controller
     public function list(){
 
         $scripts = DB::table('scripts')
+            ->select('scripts.*','title')
             ->leftJoin('segments','segments.id','=','scripts.segment_id')
             ->where('script_status','=',2)
             ->orderBy('script_status')
-            ->paginate(10);
+            ->paginate(10,['*'],"scripts");
 
+        $scriptsNeedApproval = DB::table('scripts')
+            ->select('scripts.*','title')
+            ->leftJoin('segments','segments.id','=','scripts.segment_id')
+            ->where('script_status','=',3)
+            ->orderBy('script_status')
+            ->paginate(10,['*'],"awaiting");
 
+        $scriptsApproved = DB::table('scripts')
+            ->select('scripts.*','title')
+            ->leftJoin('segments','segments.id','=','scripts.segment_id')
+            ->where('script_status','=',1)
+            ->orderBy('script_status')
+            ->paginate(10,['*'],"approved");
 
         return view('console.scripts.list',[
-            "scripts"=>$scripts
+            "scripts"=>$scripts,
+            "scriptsApproved"=>$scriptsApproved,
+            "scriptsNeedApproval"=> $scriptsNeedApproval
         ]);
 
     }
