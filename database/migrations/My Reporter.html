@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)https://localhost/console/scripts/edit/4 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My Reporter</title>
+    <script type="module" src="./My Reporter_files/client"></script><link rel="stylesheet" href="./My Reporter_files/app.css">    <link rel="stylesheet" href="https://[::1]:5173/css/app.css">
+    <link rel="stylesheet" href="./My Reporter_files/all.min.css">
+    <script type="module" src="https://[::1]:5173/resources/js/app.js"></script>
+    <script src="https://[::1]:5173/resources/js/functions.js"></script>
+</head>
+<body class=" overflow-hidden h-screen w-screen relative">
+<div class=" grid w-full h-full grid-cols-[200px_minmax(900px,_1fr)]  grid-rows-[1fr_minmax(1.5rem,20px)]">
+    <aside id="sidebar" class="flex flex-col justify-between flex-shrink bg-slate-200 p-5 ">
+        <div class="flex-shrink p-3">
+                            <p class="text-xl">Louvenia Conn</p>
+                <p class="text-m"><a href="https://localhost/">Logout</a></p>
+                    </div>
+        <nav class="flex-shrink">
+            <ul id="dashboard" class="text-sm" role="list">
+                                                    <li><a class="font-semibold my-6 text-slate-600 hover:text-slate-500" href="https://localhost/console/segmentTypes/list"><i class="fa-solid fa-filter text-lg m-2 mr-3"></i>segment types</a></li>
+                                    <li><a class="font-semibold my-6 text-slate-600 hover:text-slate-500" href="https://localhost/console/segments/list"><i class="fa-solid fa-folder text-lg m-2 mr-3"></i>segments</a></li>
+                                    <li><a class="font-semibold my-6 text-slate-600 hover:text-slate-500" href="https://localhost/console/scripts/list"><i class="fa-solid fa-scroll text-lg m-2 mr-3"></i>scripts</a></li>
+                                    <li><a class="font-semibold my-6 text-slate-600 hover:text-slate-500" href="https://localhost/console/users/list"><i class="fa-solid fa-user text-lg m-2 mr-3"></i>users</a></li>
+                
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="flex-grow overflow-y-auto h-full">
+
+    <header class="text-3xl font-bold bg-red-200 py-10 px-5 bg-slate-500 text-white mb-5">
+            <h1>Edit Script</h1>
+    </header>
+    <main class="container mx-auto">
+            <div id="modal" class="absolute w-screen h-screen bg-gray-800/25 top-0 left-0 flex items-center justify-center hidden">
+        <div class="mw-30 bg-white rounded-lg drop-shadow-md flex flex-col overflow-hidden	">
+            <div class="bg-sky-500 text-white text-3xl font-bold flex-shrink p-3">Loading</div>
+            <div class="flex-grow p-4 mh-5">Generating Text-to-Speech...</div>
+        </div>
+    </div>
+<p class="my-4">Create the script for the AI to read based on the reporter's prompts.</p>
+<form name="scriptForm" onsubmit="openModal();" method="post" action="https://localhost/console/scripts/save/4" novalidate="">
+    <input type="hidden" name="_token" value="bP6nHgjtejhbbgHWR3u0lwxk9096hL9K3X1uuSNK">    <input type="hidden" value="1" name="segment_id">
+    <div id="prompt">
+        <h2 class="text-2xl my-2">Repoter Details (report)</h2>
+
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+                            <div>
+                    <label for="voluptas" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">et</label>
+                    <p type="text" id="voluptas" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Est qui et sunt et cum esse suscipit quisquam laborum.</p>
+                </div>
+
+                            <div>
+                    <label for="qui" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">doloribus</label>
+                    <p type="text" id="qui" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Consequatur deserunt cumque aut recusandae nemo consequatur cum dolores.</p>
+                </div>
+
+                            <div>
+                    <label for="sint" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">dolorem</label>
+                    <p type="text" id="sint" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Doloremque et maxime et quia animi.</p>
+                </div>
+
+                            <div>
+                    <label for="et" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">facilis</label>
+                    <p type="text" id="et" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Et aut recusandae nulla eum facere dolor deleniti.</p>
+                </div>
+
+                            <div>
+                    <label for="atque" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">quo</label>
+                    <p type="text" id="atque" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Voluptatum corrupti hic officia deleniti consequatur dicta cumque.</p>
+                </div>
+
+                    </div>
+        <hr>
+        <br>
+
+
+    </div>
+    <h2 class="text-2xl">Prompter</h2>
+    <div>
+        <label class=" my-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">AI Prompt</label>
+        <textarea id="promptText" class="resize-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="script_prompt"></textarea>
+        <button type="button" onclick="getScript()" class="my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Generate Script <img id="loading" src="https://localhost/assets/spinner.svg" alt="loading script" class="w-9 inline hidden"></button>
+    </div>
+    <h2 class="text-2xl my-4">AI Script</h2>
+    <p>Surround the name of the announcer with square brackets ([]). Seperate each script line when a new line.</p>
+    <div id="script">
+        <textarea name="chat_script" id="chat_script_content" class="whitespace-pre-wrap h-60 break-words resize-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Dolorem est fugiat sint nisi quia. Et voluptas aut ea ut sed. Consequatur eum sapiente molestiae. Error doloribus ratione nostrum aut. Et quis aliquid sapiente est.</textarea>
+    </div>
+    <div id="recording">
+
+    </div>
+    <div class="my-4">
+        <button type="button" onclick="saveDraft()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save Draft</button>
+        <button type="submit" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Approve</button>
+    </div>
+</form>
+
+<script>
+    async function getScript(){
+        document.getElementById('loading').classList.remove('hidden');
+        let prompt = document.getElementById("promptText").value;
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST","/console/scripts/generate",true);
+        xhr.setRequestHeader("Content-Type","application/json");
+        xhr.setRequestHeader("X-CSRF-TOKEN",'bP6nHgjtejhbbgHWR3u0lwxk9096hL9K3X1uuSNK');
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState==4)
+                if(xhr.status==200)
+                    loadScript(xhr.response);
+                else {
+                    document.getElementById('loading').classList.add('hidden');
+                    alert(xhr.statusText);
+                }
+        }
+        xhr.send(JSON.stringify({prompt}));
+    }
+
+    function loadScript(data){
+        let scriptObj=JSON.parse(data);
+        console.log(scriptObj['script']);
+        document.getElementById('chat_script_content').value = scriptObj['script'];
+        document.getElementById('loading').classList.add('hidden');
+    }
+
+    function saveDraft(){
+        var xhr = new XMLHttpRequest();
+        var prompt = document.forms.scriptForm.elements['script_prompt'].value;
+        var script = document.forms.scriptForm.elements['chat_script'].value;
+
+        console.log(prompt,script);
+
+        xhr.open("POST","/console/scripts/draft/4",true);
+        xhr.setRequestHeader("Content-Type","application/json");
+        xhr.setRequestHeader("X-CSRF-TOKEN",'bP6nHgjtejhbbgHWR3u0lwxk9096hL9K3X1uuSNK');
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState==4)
+                if(xhr.status==200)
+                    window.location.reload();
+        }
+
+
+        xhr.send(JSON.stringify({script_prompt: prompt, chat_script: script}));
+    }
+
+    function openModal(){
+        document.getElementById('modal').classList.remove('hidden');
+    }
+
+
+</script>
+
+    </main>
+    </div>
+
+    <div class="bg-slate-300 px-2 w-screen">
+        <p class="text-white text-center">
+                </p>
+    </div>
+</div>
+
+
+
+
+
+
+
+</body></html>

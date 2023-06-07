@@ -3,8 +3,14 @@
     <h1>Edit Script</h1>
 @endsection
 @section('content')
+    <div id="modal" class="absolute w-screen h-screen bg-gray-800/25 top-0 left-0 flex items-center justify-center hidden">
+        <div class="mw-30 bg-white rounded-lg drop-shadow-md flex flex-col overflow-hidden	">
+            <div class="bg-sky-500 text-white text-3xl font-bold flex-shrink p-3">Loading</div>
+            <div class="flex-grow p-4 mh-5">Generating Text-to-Speech...</div>
+        </div>
+    </div>
 <p class="my-4">Create the script for the AI to read based on the reporter's prompts.</p>
-<form name="scriptForm" method="post" action="/console/scripts/save/{{$script->id}}" novalidate>
+<form name="scriptForm" onsubmit="openModal();" method="post" action="/console/scripts/save/{{$script->id}}" novalidate>
     @csrf
     <input type="hidden" value="{{$segment->id}}" name="segment_id"/>
     <div id="prompt">
@@ -43,6 +49,7 @@
         <button type="submit" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Approve</button>
     </div>
 </form>
+
 <script>
     async function getScript(){
         document.getElementById('loading').classList.remove('hidden');
@@ -89,6 +96,10 @@
 
 
         xhr.send(JSON.stringify({script_prompt: prompt, chat_script: script}));
+    }
+
+    function openModal(){
+        document.getElementById('modal').classList.remove('hidden');
     }
 
 

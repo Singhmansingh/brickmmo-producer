@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Host;
 use App\Models\Script;
 use App\Models\Segment;
 use App\Models\SegmentField;
@@ -10,10 +11,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use Google\Cloud\TextToSpeech\V1\AudioConfig;
+use Google\Cloud\TextToSpeech\V1\AudioEncoding;
+use Google\Cloud\TextToSpeech\V1\SynthesisInput;
+use Google\Cloud\TextToSpeech\V1\TextToSpeechClient;
+use Google\Cloud\TextToSpeech\V1\SsmlVoiceGender;
+use Google\Cloud\TextToSpeech\V1\VoiceSelectionParams;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 class ScriptsController extends Controller
 {
     public function list(){
-
         $scripts = DB::table('scripts')
             ->select('scripts.*','title')
             ->leftJoin('segments','segments.id','=','scripts.segment_id')
@@ -49,7 +58,7 @@ class ScriptsController extends Controller
             ->where('segments.id','=',$script->segment_id)
             ->get()->first();
 
-        $segmentFields=SegmentField::all()->where('segment_type_id','=',$segment->id);
+        $segmentFields=SegmentField::all()->where('segment_type_id','=',$segment->segment_type_id);
 
         $segmentData=json_decode($segment->segment_data,true);
 
@@ -59,7 +68,8 @@ class ScriptsController extends Controller
         // when passing to the view, you get the field information as well as the data in a single object
         foreach ($segmentFields as $field)
         {
-            $field->value=$segmentData[$field->field_name];
+            if(isset($segmentData[$field->field_name])) $field->value=$segmentData[$field->field_name];
+            else $field->value="";
             $segmentDataFields[]=$field;
         }
 
@@ -78,7 +88,8 @@ class ScriptsController extends Controller
         // when passing to the view, you get the field information as well as the data in a single object
         foreach ($segmentFields as $field)
         {
-            $field->value=$segmentData[$field->field_name];
+            if(isset($segmentData[$field->field_name])) $field->value=$segmentData[$field->field_name];
+            else $field->value="No Answer";
             $segmentDataFields[]=$field;
         }
 
@@ -129,13 +140,17 @@ class ScriptsController extends Controller
             "chat_script"=> "required",
         ]);
 
+        $scriptid = $script->id;
+
+        $this->scriptToAudio($scriptid,$data['chat_script']);
+
+
         $script->script_prompt=$data['script_prompt'];
         $script->chat_script=$data['chat_script'];
         $script->script_status=1;
         $script->approval_date=today()->toDate();
         $script->user_id=Auth::user()->id;
-        $script->script_audio_src="";
-
+        $script->script_audio_src=$scriptid.".mp3";
         $script->save();
 
         return redirect('/console/scripts/list');
@@ -205,5 +220,61 @@ class ScriptsController extends Controller
         $script = $data['choices'][0]['message']['content'];
 
         return response()->json(["script"=>$script]);
+    }
+
+    public function scriptToAudio($scriptid, String $script){
+
+        $ssml=$this->scriptToSSML($script);
+        putenv("GOOGLE_APPLICATION_CREDENTIALS=" . __DIR__ . '/service_worker.json');
+
+        $textToSpeechClient = new TextToSpeechClient();
+
+       // $script = file_get_contents('script.ssml');
+
+        $synthesisInput = (new SynthesisInput())->setSsml($ssml);
+
+        $audioConfig = (new AudioConfig())->setAudioEncoding(AudioEncoding::MP3);
+
+        $voiceSelectionParams = (new VoiceSelectionParams())
+            ->setLanguageCode('en-US')
+            ->setSsmlGender(SsmlVoiceGender::MALE); // or SsmlVoiceGender::MALE
+
+        $resp = $textToSpeechClient->synthesizeSpeech($synthesisInput, $voiceSelectionParams, $audioConfig);
+
+        //$file=$resp->getAudioContent();
+        //Storage::putFileAs('audio',$file,'test.mp3');
+        Storage::put('audio/'.$scriptid.'.mp3', $resp->getAudioContent());
+
+//        file_put_contents('storage/audio/'.$scriptid.'.mp3', );
+    }
+
+    public function scriptToSSML(String $script){
+        $hosts=Host::all();
+        function linesplit($n){
+            return explode(': ',$n,2);
+        }
+        $scriptLines=explode("\r\n",$script);
+        $lines=array();
+        foreach($scriptLines as $line){
+            $lines[]=linesplit($line);
+        }
+
+        $splitlines=array();
+        foreach ($lines as $k=>$line){
+            if(!$line[0]) continue;
+            foreach ($hosts as $host){
+
+                if($line[0]==$host['name']) $splitlines[]=array('name'=>$line[0],'gtts_name'=>$host['gtts_name'],'line'=>$line[1]);
+            }
+        }
+
+        ob_start();
+        echo '<speak>';
+        foreach ($splitlines as $row) {
+            echo '<voice name="en-'.$row['gtts_name'].'">'.$row['line'].'</voice>';
+        }
+        echo '</speak>';
+        $ssml=ob_get_clean();
+        return $ssml;
     }
 }
