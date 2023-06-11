@@ -1,5 +1,9 @@
 @extends ('layout.console')
 
+@section('breadcrumb')
+    @include ('bootstrap.breadcrumb',['routes'=>array()])
+@endsection
+
 @section('header')
     <h1>Welcome to Brickmmo Producer!</h1>
 @endsection

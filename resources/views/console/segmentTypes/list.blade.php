@@ -1,4 +1,13 @@
 @extends('layout.console')
+@section('breadcrumb')
+    @include ('bootstrap.breadcrumb',['routes'=>array(
+        array("name"=>"Segment Types","link"=>"/console/segmentTypes/list")
+    )])
+@endsection
+@section('header')
+<h1>Segment Types</h1>
+
+@endsection
 
 @section('content')
     <h1 class="text-3xl font-semibold">Segments</h1>

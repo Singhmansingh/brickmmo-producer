@@ -21,7 +21,7 @@ class ConsoleController extends Controller
 
     public function loginForm()
     {
-        $user = User::all()->first();
+        $user = User::all()->where('role','=','producer')->first();
         return view('console.login',["user"=>$user]);
     }
 

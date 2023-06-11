@@ -22,32 +22,34 @@ use Illuminate\Support\Str;
 
 class ScriptsController extends Controller
 {
-    public function list(){
-        $scripts = DB::table('scripts')
-            ->select('scripts.*','title')
-            ->leftJoin('segments','segments.id','=','scripts.segment_id')
-            ->where('script_status','=',2)
-            ->orderBy('script_status')
-            ->paginate(10,['*'],"scripts");
+    public function list(String $status){
 
-        $scriptsNeedApproval = DB::table('scripts')
-            ->select('scripts.*','title')
-            ->leftJoin('segments','segments.id','=','scripts.segment_id')
-            ->where('script_status','=',3)
-            ->orderBy('script_status')
-            ->paginate(10,['*'],"awaiting");
+        switch($status){
+            case "approved": $status_id=1;break;
+            case "in-progress": $status_id=2;break;
+            case "needs-approval": $status_id=3;break;
+            default: $status_id=null;break;
+        }
 
-        $scriptsApproved = DB::table('scripts')
-            ->select('scripts.*','title')
-            ->leftJoin('segments','segments.id','=','scripts.segment_id')
-            ->where('script_status','=',1)
-            ->orderBy('script_status')
-            ->paginate(10,['*'],"approved");
+
+        $scriptquery=Script::query();
+        if($status_id){
+            $scriptquery->where('script_status','=',$status_id);
+
+        }
+
+
+        $scripts=$scriptquery
+            ->with('segment')
+            ->orderBy('created_at','desc')
+            ->paginate(10);
+
+
+        $unusedsegments = Segment::all()->whereNotIn('id', DB::table('scripts')->get('segment_id')->pluck('segment_id'))->count();
 
         return view('console.scripts.list',[
             "scripts"=>$scripts,
-            "scriptsApproved"=>$scriptsApproved,
-            "scriptsNeedApproval"=> $scriptsNeedApproval
+            "unusedsegments"=> $unusedsegments
         ]);
 
     }
@@ -106,6 +108,7 @@ class ScriptsController extends Controller
 
         return view('console.scripts.new',[
             "segment"=>$segment,
+            "script"=>$script,
             "segmentType"=>$segmentType->type_name,
             "segmentDataFields"=>$segmentDataFields,
         ]);
@@ -169,7 +172,7 @@ class ScriptsController extends Controller
 
         $script->save();
 
-        return response('OK',200);
+        return response()->json($script);
     }
 
     public function promptToScript(Request $request){
@@ -186,7 +189,7 @@ class ScriptsController extends Controller
             'messages' => array(
                 array(
                     "role" => "system",
-                    "content" => "You are a script writer that writes a discussion between two radio hosts for a Lego city radio station called 'Brickmmo Radio'. Emmet reads out the news and Brick says funny anecdotes to compliment the news. The dialog should clearly sound like an AI wrote it."
+                    "content" => "You are a script writer that writes a discussion between two radio hosts for a Lego city radio station called 'Brickmmo Radio'. Emmet reads out the news and Brick says funny anecdotes to compliment the news."
                 ),
                 array(
                     "role" => "user",

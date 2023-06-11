@@ -13,6 +13,7 @@ class ScheduledSegment extends Model
         'scheduled_for',
         'script_id',
         'music_id',
+        'is_playing'
     ];
 
     public function music()

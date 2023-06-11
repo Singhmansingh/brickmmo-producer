@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>My Reporter</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
@@ -11,62 +7,76 @@
     <script type="module" src="{{mix('resources/js/app.js')}}"></script>
     <script src="{{mix('resources/js/functions.js')}}"></script>
 </head>
-@php
-$sidebar=true;
-@endphp
-<body class=" overflow-hidden h-screen w-screen relative">
-<div class=" grid w-full h-full {{$sidebar ?  'grid-cols-[200px_minmax(900px,_1fr)]' : 'grid-cols-none' }}  grid-rows-[1fr_minmax(1.5rem,20px)]">
-    <aside id="sidebar" class="flex flex-col justify-between flex-shrink bg-slate-200 p-5 {{ !$sidebar ? 'hidden' : '' }}">
-        <div class="flex-shrink p-3">
-            @if (Auth::check())
-                <p class="text-xl">{{auth()->user()->first}} {{auth()->user()->last}}</p>
-                <p class="text-m"><a href="/">Logout</a></p>
-            @else
-                <a href="/">Return to My Reporter</a>
-            @endif
+<body>
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <div class="px-3 py-3 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center justify-start">
+                <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                    <span class="sr-only">Open sidebar</span>
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                    </svg>
+                </button>
+                <a href="https://flowbite.com" class="flex ml-2 md:mr-24">
+                    <img src="/assets/logo.svg" class="h-8 mr-3" alt="FlowBite Logo" />
+
+                    <span class="self-center text-xl font-semibold sm:text-xl whitespace-nowrap dark:text-white">BrickMMO Producer</span>
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex ml-3 flex-col items-end">
+                    <span class="font-semibold">{{auth()->user()->first}} {{auth()->user()->last}}</span>
+                    <span class="text-sm">{{auth()->user()->email}}</span>
+                </div>
+                <img src="/assets/profile.png" class="w-12 drop-shadow-md" >
+            </div>
         </div>
-        <nav class="flex-shrink">
-            <ul id="dashboard" class="text-sm" role="list">
-                @php
-                    $routes=array(
-                      ["fa-solid fa-scroll","scripts","/console/scripts/list"],
-                      ["fa-solid fa-filter","segment types","/console/segmentTypes/list"],
-                      ["fa-solid fa-folder","segments","/console/segments/list"],
-                      ["fa-solid fa-user","users","/console/users/list"],
-                    );
+    </div>
+</nav>
 
-                    sort($routes);
-                @endphp
-                @foreach($routes as $route)
-                    <li><a class="font-semibold my-6 text-slate-600 hover:text-slate-500" href="{{$route[2]}}"><i class="{{$route[0]}} text-lg m-2 mr-3"></i>{{$route[1]}}</a></li>
-                @endforeach
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <ul class="space-y-2 font-medium">
+            @php
+                $routes=array(
+                    array("icon"=>"fa-solid fa-pie-chart","name"=>"Dashboard","route"=>"/console/dashboard"),
+                  array("icon"=>"fa-solid fa-scroll","name"=>"Scripts","route"=>"/console/scripts/list"),
+                  array("icon"=>"fa-solid fa-filter","name"=>"Segment Types","route"=>"/console/segmentTypes/list"),
+                  array("icon"=>"fa-solid fa-folder","name"=>"Segments","route"=>"/console/segments/list"),
+                  array("icon"=>"fa-solid fa-calendar","name"=>"Schedule","route"=>"/console/schedule"),
+                );
 
-            </ul>
-        </nav>
-    </aside>
+            @endphp
+            @foreach($routes as $route)
+                <li>
+                    <a href="{{$route['route']}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <div class="flex-shrink-0 w-6 h-6 flex justify-center items-center text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
+                            <i class="{{$route['icon']}}"></i>
+                        </div>
+                        <span class="flex-1 ml-3 whitespace-nowrap">{{$route['name']}}</span>
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+</aside>
+<div class="p-4 md:ml-64">
 
-    <div class="flex-grow overflow-y-auto h-full">
+    <div class="p-4  mt-14">
+        @yield('breadcrumb')
+        <header class="text-3xl font-bold  py-6 px-5 bg-white text-slate-800 border-b-4 border-amber-400 mb-7">
+            @yield('header')
+        </header>
+        @yield('widgets')
+        @yield('content')
 
-    <header class="text-3xl font-bold bg-red-200 py-10 px-5 bg-slate-500 text-white mb-5">
-        @yield('header')
-    </header>
-    <main class="container mx-auto">
-        @yield ('content')
-    </main>
     </div>
 
-    <div class="bg-slate-300 px-2 w-screen">
-        <p class="text-white text-center">
-        @if (session()->has('message'))
-        {{session()->get('message')}}
-        @endif
-        </p>
-    </div>
+    @yield('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
+
 </div>
-
-
-
-
-
 </body>
 </html>

@@ -5,6 +5,7 @@ use App\Http\Controllers\ConsoleController;
 use App\Http\Controllers\ScriptsController;
 use App\Http\Controllers\SegmentsController;
 use App\Http\Controllers\SegmentTypesController;
+use App\Http\Controllers\ScheduleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,7 +41,8 @@ Route::get('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesControlle
 Route::post('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'edit'])->where('segmentType','[0-9]+')->middleware('auth');
 
 
-Route::get('/console/scripts/list', [ScriptsController::class, 'list'])->middleware('auth');
+//Route::get('/console/scripts/list', [ScriptsController::class, 'list'])->middleware('auth');
+Route::get('/console/scripts/{status}', [ScriptsController::class, 'list'])->where('status','approved|in-progress|needs-approval|list')->middleware('auth');
 Route::post('/console/scripts/generate', [ScriptsController::class, 'promptToScript']);
 
 Route::get('/console/scripts/new/{segment:id}', [ScriptsController::class, 'new'])->where('segment','[0-9]+')->middleware('auth');
@@ -48,3 +50,6 @@ Route::get('/console/scripts/edit/{script:id}', [ScriptsController::class, 'edit
 Route::post('/console/scripts/draft/{script:id}', [ScriptsController::class, 'saveDraft']);//->where('script','[0-9]+')->middleware('auth');
 Route::post('/console/scripts/save/{script:id}', [ScriptsController::class, 'save'])->where('script','[0-9]+')->middleware('auth');
 Route::post('/console/scripts/add', [ScriptsController::class, 'add'])->middleware('auth');
+
+Route::get('/console/schedule', [ScheduleController::class, 'list'])->middleware('auth');
+Route::get('/console/schedule/refresh',[ScheduleController::class, 'refresh'])->middleware('auth');

@@ -1,5 +1,8 @@
 @extends('layout.console')
+@section('header')
+<h1>Segment Types</h1>
 
+@endsection
 @section('content')
 
 <?php
@@ -9,11 +12,15 @@
   $buttonClass="text-white bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded hover:cursor-pointer";
 ?>
 
-<h1 class="text-3xl font-semibold my-6">Edit Segment Type {{$segmentType->type_name}}</h1>
+
 <form id="fieldForm" method="post" action="/console/segmentTypes/edit/{{$segmentType->id}}" class="w-full grid grid-flow-row gap-6 mt-6 grid-rows-auto">
     @csrf
     <input type="hidden" value="{{$segmentType->id}}" name="segment_type_id">
-    <input class="{{$buttonClass}} w-1/6 bg-green-600 hover:bg-green-700" type="submit" value="Save">
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl flex-shrink">Edit Segment Type {{$segmentType->type_name}}</h2>
+        <input class="{{$buttonClass}} flex-shrink w-1/6 bg-green-600 hover:bg-green-700" type="submit" value="Save">
+
+    </div>
     <div id="fields" class="grid grid-flow-row  gap-6">
 
     @foreach($fields as $x=>$field)
