@@ -19,6 +19,7 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th></th>
+                        <th>ID</th>
                         <th scope="col" class="px-6 py-3">
                             Segment name
                         </th>
@@ -38,7 +39,7 @@
                                 <i class="fa-solid fa-caret-right text-green-600 text-3xl"></i>
                         @endif
                         </td>
-
+                        <td>{{$scheduledsegment->id}}</td>
                         <th scope="row" class="px-6 py-4 font-medium flex items-center text-gray-900 whitespace-nowrap dark:text-white">
 
                             {{$scheduledsegment->script->segment->title}}
@@ -47,7 +48,7 @@
                             {{$scheduledsegment->script->segment->segmentType->type_name }}
                         </td>
                         <td class="text-center">
-                            <i class="fa-solid fa-play-circle text-amber-500 text-2xl"></i>
+                            @include('bootstrap.play', ["source"=>$scheduledsegment->script_id.'.mp3'])
                         </td>
                     </tr>
                     @endforeach

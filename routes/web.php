@@ -45,7 +45,8 @@ Route::post('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesControll
 Route::get('/console/scripts/{status}', [ScriptsController::class, 'list'])->where('status','approved|in-progress|needs-approval|list')->middleware('auth');
 Route::post('/console/scripts/generate', [ScriptsController::class, 'promptToScript']);
 
-Route::get('/console/scripts/new/{segment:id}', [ScriptsController::class, 'new'])->where('segment','[0-9]+')->middleware('auth');
+Route::get('/console/scripts/new/{script:id}', [ScriptsController::class, 'new'])->where('script','[0-9]+')->middleware('auth');
+Route::get('/console/scripts/newScript/{segment:id}', [ScriptsController::class, 'newScript'])->where('segment','[0-9]+')->middleware('auth');
 Route::get('/console/scripts/edit/{script:id}', [ScriptsController::class, 'edit'])->where('script','[0-9]+')->middleware('auth');
 Route::post('/console/scripts/draft/{script:id}', [ScriptsController::class, 'saveDraft']);//->where('script','[0-9]+')->middleware('auth');
 Route::post('/console/scripts/save/{script:id}', [ScriptsController::class, 'save'])->where('script','[0-9]+')->middleware('auth');

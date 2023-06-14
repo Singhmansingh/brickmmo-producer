@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\ScheduledSegment;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+header("Access-Control-Allow-Origin","*");
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return "hi";
@@ -31,3 +33,14 @@ Route::get('/scripts/approved', function(Request $request) {
         ->get();
    return $segments;
 });
+
+Route::get('/audio/scripts',function(Request $request) {
+    $scheduledsegments=ScheduledSegment::with('script')->with('script.segment')->get();
+    $playlist='';
+    foreach($scheduledsegments as $ss){
+        $playlist.="http://192.168.68.119/storage/audio/20.mp3\r\n";
+    }
+
+    return $playlist;
+});
+

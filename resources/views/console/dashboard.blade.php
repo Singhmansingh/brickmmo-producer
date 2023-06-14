@@ -11,8 +11,22 @@
 @section ('content')
 
 <section>
+    @if($isLive)
 
-    <div class="flex items-center justify-evenly my-10 gap-20">
+    <div class=" flex items-center justify-between bg-gradient-to-r from-green-500 to-green-400 flex-1  block  p-4 px-5 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <p class="  flex-shrink inline text-xl font-bold text-white tracking-tight text-center text-gray-900 dark:text-white"><i class="fa-solid fa-check-circle mr-3"></i> Radio is Live!</p>
+        <audio controls class="flex-shrink">
+            <source src="{{ getenv('RADIO_HOST')  }}/brickmmo-radio.mp3">
+        </audio>
+    </div>
+    @else
+        <div class=" bg-gradient-to-r from-gray-300 to-gray-200 flex-1  block  p-4 px-5 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <p class="  inline text-xl font-bold text-slate-500 tracking-tight text-center text-gray-900 dark:text-white"><i class="fa-solid fa-circle-arrow-down mr-3"></i>Radio is Offline</p>
+
+        </div>
+    @endif
+
+    <div class="flex items-center justify-evenly my-6 gap-20">
         <div class="flex-1 block  p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <p class="mb-2 text-3xl font-bold tracking-tight text-center text-gray-900 dark:text-white">{{ $segmentCount }}</p>
             <h3 class="mb-2 text-xl font-bold tracking-tight text-center text-gray-900 dark:text-white">New Segments</h3>

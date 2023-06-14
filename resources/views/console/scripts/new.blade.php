@@ -16,7 +16,6 @@
             <div class="flex-grow p-4 mh-5">Generating Text-to-Speech...</div>
         </div>
     </div>
-    <h2 class="text-xl my-4">{{$segment->title}}</h2>
     <form name="scriptForm" onsubmit="openModal();" method="post" action="/console/scripts/save/{{$script->id}}" novalidate>
         @csrf
         <input type="hidden" value="{{$segment->id}}" name="segment_id"/>

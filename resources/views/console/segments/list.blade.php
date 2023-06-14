@@ -23,7 +23,7 @@
         ":Generate_Script"=>":generate_script:",
     ),
     "buttons"=>array(
-        "generate_script"=>"/console/scripts/new"
+        "generate_script"=>"/console/scripts/newScript"
     ),
     "paginated"=>true
 ])

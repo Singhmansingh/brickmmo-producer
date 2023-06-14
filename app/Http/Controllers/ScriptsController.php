@@ -81,19 +81,7 @@ class ScriptsController extends Controller
             "segment"=>$segment
         ]);
     }
-    public function new(Segment $segment){
-        $segmentFields=SegmentField::all()->where('segment_type_id','=',$segment->segment_type_id);
-        $segmentData=json_decode($segment->segment_data,true);
-        $segmentDataFields=array();
-        $segmentType=SegmentType::all()->where('id','=',$segment->segment_type_id)->first();
-        // loop through the segment fields, and combine them with the segment data
-        // when passing to the view, you get the field information as well as the data in a single object
-        foreach ($segmentFields as $field)
-        {
-            if(isset($segmentData[$field->field_name])) $field->value=$segmentData[$field->field_name];
-            else $field->value="No Answer";
-            $segmentDataFields[]=$field;
-        }
+    public function newScript(Segment $segment){
 
         $script = new Script();
         $script->script_status=2;
@@ -105,13 +93,10 @@ class ScriptsController extends Controller
         $script->approval_date=now();
         $script->save();
 
+        dd($script);
 
-        return view('console.scripts.new',[
-            "segment"=>$segment,
-            "script"=>$script,
-            "segmentType"=>$segmentType->type_name,
-            "segmentDataFields"=>$segmentDataFields,
-        ]);
+        return redirect('/console/scripts/edit/'.$script->id);
+
     }
 
     public function add(){
@@ -172,7 +157,7 @@ class ScriptsController extends Controller
 
         $script->save();
 
-        return response()->json($script);
+        return response()->setStatusCode(200);
     }
 
     public function promptToScript(Request $request){

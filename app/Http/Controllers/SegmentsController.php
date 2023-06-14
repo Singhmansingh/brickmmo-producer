@@ -14,13 +14,19 @@ class SegmentsController extends Controller
 
         $segmentTypes=SegmentType::all();
         $scriptSegmentIds=Script::all()->pluck('segment_id');
-        $segments = DB::table('segments')
-            ->leftJoin('segment_types','segments.segment_type_id','=','segment_types.id')
-            ->whereNotIn('segments.id',$scriptSegmentIds)
+        $unusedSegments = Segment::with('segmentType')
+            ->whereNotIn('id',$scriptSegmentIds)
             ->paginate(10);
 
+
+
+//            DB::table('segments')
+//            ->leftJoin('segment_types','segments.segment_type_id','=','segment_types.id')
+//            ->whereNotIn('segments.id',$scriptSegmentIds)
+//            ->paginate(10);
+
         return view('console.segments.list',[
-            "segments"=>$segments,
+            "segments"=>$unusedSegments,
             "segmentTypes"=>$segmentTypes
         ]);
     }
