@@ -16,7 +16,7 @@
     <div class=" flex items-center justify-between bg-gradient-to-r from-green-500 to-green-400 flex-1  block  p-4 px-5 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <p class="  flex-shrink inline text-xl font-bold text-white tracking-tight text-center text-gray-900 dark:text-white"><i class="fa-solid fa-check-circle mr-3"></i> Radio is Live!</p>
         <audio controls class="flex-shrink">
-            <source src="{{ getenv('RADIO_HOST')  }}/brickmmo-radio.mp3">
+            <source src="{{ getenv('RADIO_HOST')  }}/radio.mp3">
         </audio>
     </div>
     @else

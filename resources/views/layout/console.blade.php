@@ -2,10 +2,9 @@
 <head>
     <title>My Reporter</title>
     @vite('resources/css/app.css')
-    <link rel="stylesheet" href="{{mix('css/app.css')}}">
+    <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="module" src="{{mix('resources/js/app.js')}}"></script>
-    <script src="{{mix('resources/js/functions.js')}}"></script>
+    <script type="module" src="/resources/js/app.js"></script>
 </head>
 <body>
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">

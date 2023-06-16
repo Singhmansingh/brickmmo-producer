@@ -93,7 +93,7 @@ class ScriptsController extends Controller
         $script->approval_date=now();
         $script->save();
 
-        dd($script);
+       
 
         return redirect('/console/scripts/edit/'.$script->id);
 
