@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Host;
+use App\Models\ScheduledSegment;
 use App\Models\Script;
 use App\Models\Segment;
 use App\Models\SegmentField;
@@ -93,7 +94,7 @@ class ScriptsController extends Controller
         $script->approval_date=now();
         $script->save();
 
-       
+
 
         return redirect('/console/scripts/edit/'.$script->id);
 
@@ -121,7 +122,7 @@ class ScriptsController extends Controller
         return redirect('/console/scripts/list');
     }
 
-    public function save(Script $script){
+    public function approve(Script $script){
 
         $data = request()->validate([
             "script_prompt" => "required",
@@ -132,6 +133,8 @@ class ScriptsController extends Controller
 
         $this->scriptToAudio($scriptid,$data['chat_script']);
 
+        if($script->script_audio_src) $firstrun=false;
+        else $firstrun=true;
 
         $script->script_prompt=$data['script_prompt'];
         $script->chat_script=$data['chat_script'];
@@ -140,6 +143,15 @@ class ScriptsController extends Controller
         $script->user_id=Auth::user()->id;
         $script->script_audio_src=$scriptid.".mp3";
         $script->save();
+
+        if($firstrun) return redirect('/console/scripts/edit/'.$script->id);
+
+        return redirect('/console/scripts/list');
+    }
+
+    public function delete(Script $script){
+        ScheduledSegment::where('script_id','=',$script->id)->delete();
+        $script->delete();
 
         return redirect('/console/scripts/list');
     }
@@ -160,6 +172,29 @@ class ScriptsController extends Controller
         return response()->setStatusCode(200);
     }
 
+
+
+
+
+
+
+    public function getAudio(Script $script){
+        $data=request()->validate([
+            "script"=>"required"
+        ]);
+
+
+        $this->scriptToAudio($script->id, $data['script']);
+
+        $script->script_audio_src=$script->id.".mp3";
+        $script->chat_script=$data['script'];
+        $script->save();
+
+
+        return response('OK');
+    }
+
+
     public function promptToScript(Request $request){
         $prompt = $request->input('prompt');
 
@@ -174,15 +209,27 @@ class ScriptsController extends Controller
             'messages' => array(
                 array(
                     "role" => "system",
-                    "content" => "You are a script writer that writes a discussion between two radio hosts for a Lego city radio station called 'Brickmmo Radio'. Emmet reads out the news and Brick says funny anecdotes to compliment the news."
+                    "content" => "You are a script writer that writes for a radio station 'Brickmmo Radio'. Everything takes place in a Robotic Lego city called 'BrickMMO City'."
+                ),
+                array(
+                    "role" => "system",
+                    "content" => "One host is Emmet. Emmet reads out the news."
+                ),
+                array(
+                    "role"=>"system",
+                    "content" =>"One host is Brick. Brick says funny anecdotes to compliment the news."
+                ),
+                array(
+                  "role"=>"system",
+                  "content"=>"the script should start with a host introducing the station, and end with a throw to non-specific music."
                 ),
                 array(
                     "role" => "user",
                     "content" => $prompt
                 )
             ),
-            'temperature' => 1,
-            'max_tokens' => 500,
+            'temperature' => 0.7,
+            'max_tokens' => 1000,
         );
 
         $curl = curl_init($url);

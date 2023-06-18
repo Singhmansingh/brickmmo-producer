@@ -26,18 +26,21 @@
         </div>
     @endif
 
-    <div class="flex items-center justify-evenly my-6 gap-20">
-        <div class="flex-1 block  p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <p class="mb-2 text-3xl font-bold tracking-tight text-center text-gray-900 dark:text-white">{{ $segmentCount }}</p>
-            <h3 class="mb-2 text-xl font-bold tracking-tight text-center text-gray-900 dark:text-white">New Segments</h3>
+    <div class="flex items-center justify-evenly my-6 gap-5">
+        <div class="flex-1 block  p-4 border-double border-4 border-amber-500 bg-white text-amber-500 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <p class="text-xl font-bold tracking-tight text-center dark:text-white">{{ $listenerCount }} Current Listeners</p>
         </div>
-        <div class="flex-1 block  p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <p class="mb-2 text-3xl font-bold tracking-tight text-center text-gray-900 dark:text-white">{{ $needsApproval }}</p>
-            <h3 class="mb-2 text-xl font-bold tracking-tight text-center text-gray-900 dark:text-white">Scripts need Approval</h3>
+        <div class="flex-1 block  p-4 border-double border-4 border-amber-500 bg-white text-amber-500 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <p class="text-xl font-bold tracking-tight text-center dark:text-white">{{ $segmentCount }} Inbound segments</p>
+        </div>
+        <div class="flex-1 block  p-4 border-double border-4 border-amber-500 bg-white text-amber-500 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <p class="text-xl font-bold tracking-tight  text-center dark:text-white">{{ $scriptCount }} Scripts in progress</p>
         </div>
     </div>
 
     <div class="relative">
+        <hr>
+        <h2 class="text-2xl font-bold text-slate-700 my-6">New Segments</h2>
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -51,7 +54,7 @@
                         Segment Type
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Status
+                        Action
                     </th>
 
                 </tr>
@@ -60,7 +63,7 @@
                 @foreach ($segments as $segment)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{ $segment->created_at }}
+                        {{date('M dS, Y', strtotime($segment->created_at)) }}
                     </th>
                     <td class="px-6 py-4">
                         {{ $segment->title }}
@@ -69,15 +72,7 @@
                         {{ $segment->type_name }}
                     </td>
                     <td class="px-6 py-4">
-                        {{-- @if($segment->status==0)
-                            <span class="bg-red-100 text-red-600 p-1 px-2 rounded-lg text-xs">
-                                No Script
-                            </span>
-                        @else
-                            <span class="bg-yellow-100 text-yellow-600 p-1 px-2 rounded-lg text-xs">
-                                In Progress
-                            </span>
-                        @endif --}}
+                        <a class="text-blue-500 bg-white border-2 border-current hover:text-white hover:bg-blue-700 font-bold py-2 px-4 rounded-md" href="/console/scripts/newScript/{{$segment->id}}">Generate Script</a>
                     </td>
                 </tr>
                 @endforeach

@@ -30,7 +30,7 @@
         @forelse ($scripts as $row)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <td class="px-4 text-center">
-                    @include('bootstrap.play',['source'=>"20.mp3"])
+                    @include('bootstrap.play',['source'=>$row->id.".mp3"])
 {{--                    @if($row['script_audio_src'])--}}
 {{--                        @php--}}
 {{--                        $row['script_audio_src']='test.mp3';--}}

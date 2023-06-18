@@ -17,13 +17,13 @@
 <div class="flex justify-between flex-wrap-reverse gap-y-4">
     <div class="flex gap-3 justify-evenly md:justify-start sm:flex-1">
         <a class="<?php echo (Request::path() === 'console/scripts/list') ? 'bg-red-400 text-white' : 'bg-white text-red-400' ?>
-    flex-shrink whitespace-nowrap rounded-full shadow-md border-red-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/list">All</a>
+    flex-shrink whitespace-nowrap rounded-sm shadow-md border-red-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/list">All</a>
         <a class="<?php echo (Request::path() === 'console/scripts/in-progress') ? 'bg-amber-400 text-white' : 'bg-white text-amber-400' ?>
-    flex-shrink whitespace-nowrap rounded-full shadow-md border-amber-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/in-progress">In Progress</a>
+    flex-shrink whitespace-nowrap rounded-sm shadow-md border-amber-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/in-progress">In Progress</a>
         <a class="<?php echo Request::path() === 'console/scripts/approved' ? 'bg-green-400 text-white' : 'bg-white text-green-400' ?>
-    flex-shrink whitespace-nowrap rounded-full shadow-md border-green-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/approved">Approved</a>
-        <a class="<?php echo Request::path() === 'console/scripts/needs-approval' ? 'bg-blue-400 text-white' : 'bg-white text-blue-400' ?>
-    flex-shrink whitespace-nowrap rounded-full shadow-md border-blue-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/needs-approval">Awaiting Approval</a>
+    flex-shrink whitespace-nowrap rounded-sm shadow-md border-green-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/approved">Approved</a>
+{{--        <a class="<?php echo Request::path() === 'console/scripts/needs-approval' ? 'bg-blue-400 text-white' : 'bg-white text-blue-400' ?>--}}
+{{--    flex-shrink whitespace-nowrap rounded-sm shadow-md border-blue-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/needs-approval">Awaiting Approval</a>--}}
     </div>
 
 

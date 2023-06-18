@@ -33,6 +33,8 @@ class ConsoleController extends Controller
             'password' => 'required',
         ]);
 
+        $attributes['role'] = ['producer','admin'];
+
         if(auth()->attempt($attributes))
         {
             return redirect('/console/dashboard');
@@ -49,7 +51,11 @@ class ConsoleController extends Controller
         $res = json_decode(file_get_contents(getenv('RADIO_HOST').'/status-json.xsl'), true);
 
        $radiolive =false;
-        if(isset($res['icestats']['source'])) $radiolive=true;
+       $listenerCount = 0;
+        if(isset($res['icestats']['source'])) {
+            $radiolive = true;
+            $listenerCount = $res['icestats']['source']['listeners'];
+        }
 
         $segments = DB::table("segments")
         ->leftJoin("segment_types","segments.segment_type_id","=","segment_types.id")
@@ -59,7 +65,8 @@ class ConsoleController extends Controller
         ->paginate(10);
 
         return view('console.dashboard', [
-            'needsApproval' => Script::where('script_status',3)->count(),
+            'scriptCount' => Script::where('script_status',2)->count(),
+            'listenerCount'=> $listenerCount,
             'segmentCount' => Segment::all()->count(),
             'isLive' => $radiolive,
             'segments' => $segments,
