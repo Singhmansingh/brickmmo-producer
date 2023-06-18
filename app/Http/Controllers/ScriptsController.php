@@ -161,15 +161,18 @@ class ScriptsController extends Controller
             "script_prompt" => "nullable",
             "chat_script"=> "nullable",
         ]);
-        $script->script_prompt=$data['script_prompt'];
 
-        if(!$data['chat_script']) $script->chat_script = "";
-        else $script->chat_script=$data['chat_script'];
+        if(!$data['chat_script']) $data['chat_script']="";
+        if(!$data['script_prompt']) $data['script_prompt']="";
+
+        $script->script_prompt=$data['script_prompt'];
+        $script->chat_script=$data['chat_script'];
+
         $script->script_status=2;
 
         $script->save();
 
-        return response()->setStatusCode(200);
+        return redirect('/console/scripts/list');
     }
 
 

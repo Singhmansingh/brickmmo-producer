@@ -76,7 +76,7 @@
         <a href="/console/scripts/in-progress" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Return</a>
         <button type="button" onclick="deleteScript()" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</button>
 
-        <button type="button" onclick="saveDraft()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save Draft</button>
+        <button type="button" onclick="saveDraft()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save & Close</button>
         <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-600">Approve</button>
     </div>
 </form>
@@ -139,23 +139,9 @@
     }
 
     function saveDraft(){
-        var xhr = new XMLHttpRequest();
-        var prompt = document.forms.scriptForm.elements['script_prompt'].value;
-        var script = document.forms.scriptForm.elements['chat_script'].value;
+        gid('form').action = '/console/scripts/draft/{{$script->id}}';
+        gid('form').submit();
 
-        console.log(prompt,script);
-
-        xhr.open("POST","/console/scripts/draft/{{$script->id}}",true);
-        xhr.setRequestHeader("Content-Type","application/json");
-        xhr.setRequestHeader("X-CSRF-TOKEN",'{{ csrf_token() }}');
-        xhr.onreadystatechange = function(){
-            if(xhr.readyState===4)
-                if(xhr.status===200)
-                    window.location.reload();
-        }
-
-
-        xhr.send(JSON.stringify({script_prompt: prompt, chat_script: script}));
     }
 
     function openModal(){
