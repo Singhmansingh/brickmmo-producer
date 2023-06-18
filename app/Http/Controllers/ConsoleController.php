@@ -60,9 +60,17 @@ class ConsoleController extends Controller
         $segments = DB::table("segments")
         ->leftJoin("segment_types","segments.segment_type_id","=","segment_types.id")
         ->select(["segments.*","segment_types.type_name"])
-        ->orderBy("created_at","desc")
+            ->whereDate('segments.created_at','>=',today())
+        ->orderBy("segments.created_at","desc")
 
         ->paginate(10);
+
+        $scripts= Script::with('segment')
+            ->with('segment.segmentType')
+            ->where('script_status','=',2)
+            ->limit(10)
+            ->get();
+
 
         return view('console.dashboard', [
             'scriptCount' => Script::where('script_status',2)->count(),
@@ -70,6 +78,7 @@ class ConsoleController extends Controller
             'segmentCount' => Segment::all()->count(),
             'isLive' => $radiolive,
             'segments' => $segments,
+            'scripts'=> $scripts
         ]);
     }
 

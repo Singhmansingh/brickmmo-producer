@@ -1,9 +1,10 @@
 <html>
 <head>
-    <title>My Reporter</title>
+    <title>BR Producer</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/assets/logo.svg">
     <script type="module" src="/resources/js/app.js"></script>
 </head>
 <body>
@@ -45,7 +46,7 @@
                   array("icon"=>"fa-solid fa-music","name"=>"Music","route"=>"/console/music"),
                 );
 
-                if(auth()->user()->role == 'admin')
+                if(strtolower(auth()->user()->role) == 'admin')
                 {
                     array_push($routes,
                         array("icon"=>"fa-solid fa-filter","name"=>"Segment Types","route"=>"/console/segmentTypes/list"),

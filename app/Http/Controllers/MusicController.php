@@ -44,7 +44,7 @@ class MusicController extends Controller
         $data = request()->validate([
             "music_name"=>"nullable",
             "music_artist"=>"nullable",
-            "music_file"=>"required|file|mimetypes:audio/mpeg"
+            "music_file"=>"required"
         ]);
 
 
@@ -52,6 +52,7 @@ class MusicController extends Controller
         $filename=$audio->store('music');
         $getID3=new getID3;
         $fileinfo=$getID3->analyze(Storage::path($filename));
+
 
         if(!$data['music_artist']) {
             if(isset($fileinfo['tags']['id3v2']['artist'])){

@@ -260,6 +260,8 @@ class ScriptsController extends Controller
     public function scriptToAudio($scriptid, String $script){
 
         $ssml=$this->scriptToSSML($script);
+
+
         putenv("GOOGLE_APPLICATION_CREDENTIALS=" . __DIR__ . '/service_worker.json');
 
         $textToSpeechClient = new TextToSpeechClient();
@@ -278,7 +280,9 @@ class ScriptsController extends Controller
 
         //$file=$resp->getAudioContent();
         //Storage::putFileAs('audio',$file,'test.mp3');
-        Storage::put('audio/'.$scriptid.'.mp3', $resp->getAudioContent());
+        $path = 'audio/'.$scriptid.'.mp3';
+        Storage::delete($path);
+        Storage::put($path, $resp->getAudioContent());
 
 //        file_put_contents('storage/audio/'.$scriptid.'.mp3', );
     }
@@ -288,11 +292,13 @@ class ScriptsController extends Controller
         function linesplit($n){
             return explode(': ',$n,2);
         }
-        $scriptLines=explode("\r\n",$script);
+        $scriptLines=explode("\n",$script);
         $lines=array();
         foreach($scriptLines as $line){
+            if(!$line) continue;
             $lines[]=linesplit($line);
         }
+
 
         $splitlines=array();
         foreach ($lines as $k=>$line){
