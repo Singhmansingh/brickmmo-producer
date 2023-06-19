@@ -9,13 +9,7 @@
     <h1>Edit Script</h1>
 @endsection
 @section('content')
-    <div id="modal" class="absolute w-screen h-screen bg-gray-800/25 top-0 left-0 flex items-center justify-center hidden">
-        <div class="mw-30 bg-white rounded-lg drop-shadow-md flex flex-col overflow-hidden	">
-            <div class="bg-sky-500 text-white text-3xl font-bold flex-shrink p-3">Loading</div>
-            <div class="flex-grow p-4 mh-5">Generating Text-to-Speech...</div>
-        </div>
-    </div>
-<form id="form" name="scriptForm" onsubmit="openModal();" method="post"
+<form id="form" name="scriptForm" method="post"
       action="/console/scripts/save/{{$script->id}}"
       novalidate>
     @csrf
@@ -58,18 +52,16 @@
     </div>
 
 
-    @if($script->script_audio_src)
-        <hr class="my-4"/>
+    <hr class="my-4"/>
 
-        <h2 class="text-xl my-4">Recording</h2>
-        <p>Review the audio recording.</p>
-        <div id="recording">
-            <audio controls id="player">
-                <source src="/storage/audio/{{$script->id}}.mp3">
+    <h2 class="text-xl my-4">Recording</h2>
+    <p>Review the audio recording.</p>
+    <div id="recording">
+        <audio controls id="player">
+            <source src="/storage/audio/{{$script->id}}.mp3">
 
-            </audio>
-        </div>
-    @endif
+        </audio>
+    </div>
 
     <hr class="my-4"/>
     <div class="my-4 flex justify-end">
@@ -126,8 +118,11 @@
     }
 
     function loadAudio(){
-        gid('script-loading').classList.add('hidden');
+        gid('player').oncanplay = function(){
+            gid('script-loading').classList.add('hidden');
+        }
         gid('player').load();
+
     }
 
     function deleteScript(){
@@ -142,10 +137,6 @@
         gid('form').action = '/console/scripts/draft/{{$script->id}}';
         gid('form').submit();
 
-    }
-
-    function openModal(){
-        gid('modal').classList.remove('hidden');
     }
 
 

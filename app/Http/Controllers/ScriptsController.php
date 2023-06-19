@@ -194,7 +194,7 @@ class ScriptsController extends Controller
         $script->save();
 
 
-        return response('OK');
+        return response('OK',200);
     }
 
 
@@ -203,6 +203,12 @@ class ScriptsController extends Controller
 
         if(!$prompt) return response("No Prompt",400);
 
+        $script = $this->generateScript($prompt);
+
+        return response()->json(["script"=>$script]);
+    }
+
+    public function generateScript(String $prompt){
         $key = env('CHATGPT_KEY');
         $url = "https://api.openai.com/v1/chat/completions";
         $headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $key);
@@ -223,8 +229,8 @@ class ScriptsController extends Controller
                     "content" =>"One host is Brick. Brick says funny anecdotes to compliment the news."
                 ),
                 array(
-                  "role"=>"system",
-                  "content"=>"the script should start with a host introducing the station, and end with a throw to non-specific music."
+                    "role"=>"system",
+                    "content"=>"the script should start with a host introducing the station, and end with a throw to non-specific music."
                 ),
                 array(
                     "role" => "user",
@@ -257,7 +263,7 @@ class ScriptsController extends Controller
 
         $script = $data['choices'][0]['message']['content'];
 
-        return response()->json(["script"=>$script]);
+        return $script;
     }
 
     public function scriptToAudio($scriptid, String $script){
@@ -319,6 +325,7 @@ class ScriptsController extends Controller
         }
         echo '</speak>';
         $ssml=ob_get_clean();
+
         return $ssml;
     }
 }

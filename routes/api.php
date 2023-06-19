@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Models\ScheduledSegment;
 use App\Models\Segment;
+use App\Models\Script;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,19 +54,28 @@ Route::post('/system/add',function(Request $req) {
      *  "prompt": "Hello this is a prompt",
      *  "segment_title": "GPS update June 2023",
      *  "internal_system_id":3,
-     * 
+     *  "access_token":"oeoFIENwi280"
+     *
      * }
-     * 
+     *
      */
     $req->validate([
         "prompt"=>"required",
         "segment_title"=>"required",
         "internal_system_id"=>"required|exists:internal_systems,id",
+        "access_token"=>"required"
     ]);
 
      $prompt = $req->input('prompt');
      $segmenttitle = $req->input('segment_title');
      $internalsystemid = $req->input('internal_system_id');
+     $token = $req->input('access_token');
+
+
+     $system=\App\Models\InternalSystem::find($internalsystemid);
+
+    // if($token !== $system->access_token) return null;
+
 
      $segment = new Segment();
      $segment->title=$segmenttitle;
@@ -74,12 +84,30 @@ Route::post('/system/add',function(Request $req) {
      $segment->segment_type_id = 1;
      $segment->user_id = 1;
 
-     $segment->save();
+    $segment->save();
 
      $segmentid = $segment->id;
 
-     
+     $controller = new ScriptsController();
+     $chatscript=$controller->generateScript($prompt);
 
-     return $segment;
+     $script = new Script();
+     $script->script_audio_src="";
+     $script->script_prompt = $prompt;
+     $script->chat_script = $chatscript;
+     $script->script_status = 3 ;
+     $script->approval_date = today();
+     $script->segment_id = $segmentid;
+     $script->user_id = 1;
+
+     $script->save();
+
+     $scriptid=$script->id;
+
+     $controller->scriptToAudio($scriptid,$chatscript);
+     $script->script_audio_src=$scriptid.'.mp3';
+     $script->save();
+
+     return json_encode(array("status"=>"OK","script"=>$script->chat_script));
 
 });

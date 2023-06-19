@@ -22,8 +22,8 @@
     flex-shrink whitespace-nowrap rounded-sm shadow-md border-amber-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/in-progress">In Progress</a>
         <a class="<?php echo Request::path() === 'console/scripts/approved' ? 'bg-green-400 text-white' : 'bg-white text-green-400' ?>
     flex-shrink whitespace-nowrap rounded-sm shadow-md border-green-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/approved">Approved</a>
-{{--        <a class="<?php echo Request::path() === 'console/scripts/needs-approval' ? 'bg-blue-400 text-white' : 'bg-white text-blue-400' ?>--}}
-{{--    flex-shrink whitespace-nowrap rounded-sm shadow-md border-blue-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/needs-approval">Awaiting Approval</a>--}}
+        <a class="<?php echo Request::path() === 'console/scripts/needs-approval' ? 'bg-blue-400 text-white' : 'bg-white text-blue-400' ?>
+    flex-shrink whitespace-nowrap rounded-sm shadow-md border-blue-400 border-2 text-center items-center flex p-1 px-4 font-bold" href="/console/scripts/needs-approval">Awaiting Approval</a>
     </div>
 
 
