@@ -7,6 +7,7 @@ use App\Http\Controllers\SegmentsController;
 use App\Http\Controllers\SegmentTypesController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\UsersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,9 +46,8 @@ Route::get('/console/segments/list', [SegmentsController::class, 'list'])->middl
 
 Route::middleware(['auth'])->group(function(){
 
-    Route::get('/console/segmentTypes/list', [SegmentTypesController::class, 'list'])->middleware('auth');
-    Route::get('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'editForm'])->where('segmentType','[0-9]+')->middleware('auth');
-    Route::post('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'edit'])->where('segmentType','[0-9]+')->middleware('auth');
+
+
 
 
 //Route::get('/console/scripts/list', [ScriptsController::class, 'list'])->middleware('auth');
@@ -71,6 +71,13 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/console/music/new', [MusicController::class, 'newForm']);
     Route::post('/console/music/save', [MusicController::class, 'save']);
     Route::post('/console/music/delete/{music:id}', [MusicController::class, 'delete'])->where('music','[0-9]+');
+
+    Route::get('/console/segmentTypes/list', [SegmentTypesController::class, 'list']);
+    Route::get('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'editForm'])->where('segmentType','[0-9]+');
+    Route::post('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'edit'])->where('segmentType','[0-9]+');
+
+    Route::get('/console/user',[UsersController::class,'account']);
+    Route::post('/console/user/update/{user:id}',[UsersController::class,'update'])->where('user','[0-9]+');
 });
 
 

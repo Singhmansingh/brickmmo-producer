@@ -76,8 +76,12 @@ class ScriptsController extends Controller
             $segmentDataFields[]=$field;
         }
 
+
+        $hosts = Host::all();
+
         return view('console.scripts.edit',[
             "script"=>$script,
+            "hosts"=>$hosts,
             "segmentDataFields"=>$segmentDataFields,
             "segment"=>$segment
         ]);

@@ -36,13 +36,38 @@
 
 
     </div>
+
     <h2 class="text-xl">Prompter</h2>
     <div >
         <label class=" my-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">AI Prompt</label>
         <textarea id="promptText" class="resize-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="script_prompt">{{$script->script_prompt}}</textarea>
         <button type="button" onclick="getScript()" class="my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Generate Script <img id="loading" src="{{asset('assets/spinner.svg')}}" alt="loading script" class="w-9 inline hidden"></button>
     </div>
+
     <hr class="my-4"/>
+    <h2 class="text-xl">Hosts</h2>
+    <div id="hosts" class="flex overflow-x-auto max-w-full gap-4 p-5">
+        @forelse($hosts as $host)
+            <div class="flex flex-shrink items-center space-x-2 shadow-lg py-2 min-w-fit px-3 bg-zinc-100 dark:bg-zinc-400 rounded-full">
+                <img class="bg-white w-10 h-10 rounded-full" src="@if($host->profile_pic) {{$host->profile_pic}} @else /assets/profile.png @endif" alt="">
+                <div class="font-medium dark:text-white">
+                    <div class="mr-5">{{$host->name}}</div>
+                    @php
+                        $limit=50;
+                        $personality = strlen($host->personality) > $limit ? substr($host->personality,0,$limit)."..." : $host->personality;
+
+                    @endphp
+                    <div class="mr-5 text-sm text-gray-500 dark:text-gray-400">{{$personality}}</div>
+                </div>
+            </div>
+        @empty
+            <p>No hosts available</p>
+        @endforelse
+
+    </div>
+
+    <hr class="my-4"/>
+
     <h2 class="text-xl my-4">AI Script</h2>
     <p>Verify the script format. Use the format:  <span class="font-mono bg-zinc-100 px-2 rounded-md">Host: this is my line</span>. Remove any other characters. Separate lines with a line in-between. </p>
     <div id="script">

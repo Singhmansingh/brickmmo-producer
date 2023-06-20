@@ -63,13 +63,11 @@ Route::post('/system/add',function(Request $req) {
         "prompt"=>"required",
         "segment_title"=>"required",
         "internal_system_id"=>"required|exists:internal_systems,id",
-        "access_token"=>"required"
     ]);
 
      $prompt = $req->input('prompt');
      $segmenttitle = $req->input('segment_title');
      $internalsystemid = $req->input('internal_system_id');
-     $token = $req->input('access_token');
 
 
      $system=\App\Models\InternalSystem::find($internalsystemid);

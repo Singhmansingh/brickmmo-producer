@@ -29,7 +29,7 @@
                     <span class="font-semibold">{{auth()->user()->first}} {{auth()->user()->last}}</span>
                     <a href="/console/logout" class="text-sm underline">Log Out</a>
                 </div>
-                <img src="/assets/profile.png" class="w-12 drop-shadow-md" >
+                <a href="/console/user" aria-label="account details"><img src="/assets/profile.png" class="w-12 drop-shadow-md hover:drop-shadow-lg " ></a>
             </div>
         </div>
     </div>
