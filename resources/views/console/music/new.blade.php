@@ -1,5 +1,12 @@
 @extends('layout.console')
 
+@section('breadcrumb')
+    @include ('bootstrap.breadcrumb',['routes'=>array(
+        array("name"=>"Music","link"=>"/console/music"),
+        array("name"=>"New Music Track","link"=>"/console/music/new"),
+    )])
+@endsection
+
 @section('header')
     <h1>New Music Track</h1>
 @endsection

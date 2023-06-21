@@ -4,7 +4,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="/assets/logo.svg">
+    <link rel="icon" href="/assets/logo.png">
     <script type="module" src="/resources/js/app.js"></script>
 </head>
 <body>
@@ -19,7 +19,7 @@
                     </svg>
                 </button>
                 <span class="flex ml-2 md:mr-24">
-                    <img src="/assets/logo.svg" class="h-8 mr-3" alt="FlowBite Logo" />
+                    <img src="/assets/logo.png" class="h-8 mr-3" alt="BrickMMO Radio Logo" />
 
                     <span class="self-center text-xl font-semibold sm:text-xl whitespace-nowrap dark:text-white">BrickMMO Producer</span>
                 </span>

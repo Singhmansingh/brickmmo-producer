@@ -1,4 +1,10 @@
 @extends('layout.console')
+@section('breadcrumb')
+    @include ('bootstrap.breadcrumb',['routes'=>array(
+        array("name"=>"Segment Types","link"=>"/console/segmentTypes/list"),
+        array("name"=>ucfirst($segmentType->type_name),"link"=>"/console/segmentTypes/edit/".$segmentType->id),
+    )])
+@endsection
 @section('header')
 <h1>Segment Types</h1>
 
@@ -17,7 +23,7 @@
     @csrf
     <input type="hidden" value="{{$segmentType->id}}" name="segment_type_id">
     <div class="flex justify-between items-center">
-        <h2 class="text-2xl flex-shrink">Edit Segment Type {{$segmentType->type_name}}</h2>
+        <h2 class="text-2xl flex-shrink">Edit Segment Type {{ucwords($segmentType->type_name)}}</h2>
         <input class="{{$buttonClass}} flex-shrink w-1/6 bg-green-600 hover:bg-green-700" type="submit" value="Save">
 
     </div>

@@ -78,6 +78,9 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/console/user',[UsersController::class,'account']);
     Route::post('/console/user/update/{user:id}',[UsersController::class,'update'])->where('user','[0-9]+');
+
+    Route::post('/radio/request',[ScheduleController::class,'queue']);
+    Route::post('/radio/request/segment',[ScheduleController::class,'queueSegment']);
 });
 
 

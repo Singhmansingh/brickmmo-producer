@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Music;
 use App\Models\ScheduledSegment;
 use App\Models\Script;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class ScheduleController extends Controller
 {
@@ -14,8 +17,10 @@ class ScheduleController extends Controller
             ->with('script.segment')
             ->with('script.segment.segmentType')
             ->get();
+        $tracks=Music::all();
         return view('console.schedule.list',[
-            "schedule"=>$schedule
+            "schedule"=>$schedule,
+            "tracks"=>$tracks
         ]);
     }
 
@@ -36,5 +41,42 @@ class ScheduleController extends Controller
         }
 
         return redirect('/console/schedule');
+    }
+
+    public function queue(){
+        $data = request()->validate([
+            "music_id"=>"required|exists:music,id"
+        ]);
+
+        $music_id = request()->input('music_id');
+
+        $music = Music::find($music_id);
+
+        $file = $music->music_src;
+
+        $path = Storage::path($file);
+
+        $req = Http::post(getenv("REQ_URL"),[
+            'track'=>$path
+        ]);
+
+    }
+    public function queueSegment(){
+       request()->validate([
+            "script_id"=>"required|exists:scripts,id"
+        ]);
+
+        $script_id = request()->input('script_id');
+
+        $script = Script::find($script_id);
+
+        $file = $script->script_audio_src;
+
+        $path = Storage::path('/audio/'.$file);
+
+        $req = Http::post(getenv("REQ_URL"),[
+            'track'=>$path
+        ]);
+
     }
 }

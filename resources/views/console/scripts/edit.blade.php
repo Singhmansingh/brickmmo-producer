@@ -49,7 +49,14 @@
     <div id="hosts" class="flex overflow-x-auto max-w-full gap-4 p-5">
         @forelse($hosts as $host)
             <div class="flex flex-shrink items-center space-x-2 shadow-lg py-2 min-w-fit px-3 bg-zinc-100 dark:bg-zinc-400 rounded-full">
-                <img class="bg-white w-10 h-10 rounded-full" src="@if($host->profile_pic) {{$host->profile_pic}} @else /assets/profile.png @endif" alt="">
+                @php
+                $url = "https://reporters.brickmmo.com/storage/".$host->profile_pic;
+                @endphp
+                @if(@getimagesize($url))
+                    <img class="bg-white w-10 h-10 rounded-full" src="{{$url}}" alt="">
+                @else
+                    <img class="bg-white w-10 h-10 rounded-full" src="/assets/profile.png" alt="">
+                @endif
                 <div class="font-medium dark:text-white">
                     <div class="mr-5">{{$host->name}}</div>
                     @php
