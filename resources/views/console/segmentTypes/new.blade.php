@@ -2,7 +2,7 @@
 @section('breadcrumb')
     @include ('bootstrap.breadcrumb',['routes'=>array(
         array("name"=>"Segment Types","link"=>"/console/segmentTypes/list"),
-        array("name"=>ucfirst($segmentType->type_name),"link"=>"/console/segmentTypes/edit/".$segmentType->id),
+        array("name"=>"New Segment","link"=>"#"),
     )])
 @endsection
 @section('header')
@@ -28,9 +28,7 @@
 
     </div>
     <div id="fields" class="grid grid-flow-row  gap-6">
-    @php
-        $datatypes=["text"=>"text","textarea"=>"textarea"];
-    @endphp
+
     @foreach($fields as $x=>$field)
         <fieldset id="{{$x}}_fieldset" class="{{$fieldsetClass}}">
             <div class="flex flex-col gap-2">
@@ -38,16 +36,12 @@
                 <input name="fieldLabels[]" type="text" value="{{ $field->field_label }}" class="{{$inputClass}}">
             </div>
             <div class="flex flex-col gap-2">
-                <label class="text-sm">Input-Name</label>
+                <label class="text-sm">Input Name</label>
                 <input name="fieldNames[]" type="text" value="{{ $field->field_name }}" class="{{$inputClass}}">
             </div>
             <div class="flex flex-col gap-2">
                 <label class="text-sm">Data Type</label>
-                <select name="fieldTypes[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    @foreach($datatypes as $dt)
-                        <option @if($dt==$field->field_data_type) selected @endif value="{{$dt}}">{{$dt}}</option>
-                    @endforeach
-                </select>
+                <input name="fieldTypes[]" type="text" value="{{ $field->field_data_type }}" class="{{$inputClass}}">
             </div>
             <div class="flex flex-col h-full justify-end">
                 <button type="button" onclick="removeField('{{$x}}_fieldset')" class="{{$remButtonClass}}">Remove</button>
@@ -75,15 +69,10 @@
             </div>
             <div class="flex flex-col gap-2">
                 <label class="text-sm">Data Type</label>
-                 <select name="fieldTypes[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    @foreach($datatypes as $dt)
-        <option value="{{$dt}}">{{$dt}}</option>
-                    @endforeach
-        </select>
-</div>
-
-<div class="flex flex-col h-full justify-end">
-<button type="button" onclick="removeField('${index}_fieldset')" class="{{$remButtonClass}}">Remove</button>
+                <input name="fieldTypes[]" type="text" class="{{$inputClass}}">
+            </div>
+             <div class="flex flex-col h-full justify-end">
+                <button type="button" onclick="removeField('${index}_fieldset')" class="{{$remButtonClass}}">Remove</button>
             </div>
         </fieldset>
         `

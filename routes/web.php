@@ -46,10 +46,6 @@ Route::get('/console/segments/list', [SegmentsController::class, 'list'])->middl
 
 Route::middleware(['auth'])->group(function(){
 
-
-
-
-
 //Route::get('/console/scripts/list', [ScriptsController::class, 'list'])->middleware('auth');
     Route::get('/console/scripts/{status}', [ScriptsController::class, 'list'])->where('status','approved|in-progress|needs-approval|list')->middleware('auth');
     Route::post('/console/scripts/generate', [ScriptsController::class, 'promptToScript']);
@@ -74,6 +70,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/console/segmentTypes/list', [SegmentTypesController::class, 'list']);
     Route::get('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'editForm'])->where('segmentType','[0-9]+');
+    Route::post('/console/segmentTypes/new', [SegmentTypesController::class, 'new']);
     Route::post('/console/segmentTypes/edit/{segmentType:id}', [SegmentTypesController::class, 'edit'])->where('segmentType','[0-9]+');
 
     Route::get('/console/user',[UsersController::class,'account']);

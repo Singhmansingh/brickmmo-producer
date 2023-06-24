@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 class SegmentTypesController extends Controller
 {
     public function list(){
-        $segmentTypes=SegmentType::all();
+        $segmentTypes=SegmentType::with('segmentFields')->get();
+
         return view('console.segmentTypes.list',[ "segmentTypes"=>$segmentTypes]);
     }
 
@@ -18,6 +19,22 @@ class SegmentTypesController extends Controller
         return view('console.segmentTypes.edit',[
             "segmentType"=>$segmentType,
             "fields"=>$segmentFields
+        ]);
+    }
+
+    public function new(){
+        $data = request()->validate([
+            "type_name"=>"required|regex:/^[a-zA-Z ]+$/"
+        ]);
+
+        $type_name=$data['type_name'];
+        $segmentType= new SegmentType();
+        $segmentType->type_name=$type_name;
+        $segmentType->save();
+
+        $id = $segmentType->id;
+        return response([
+            "id"=>$id
         ]);
     }
 
